@@ -2,10 +2,18 @@ import { ToastContainer } from "react-toastify";
 import "./App.css";
 import Login from "./components/Login";
 import SignUp from "./components/Register";
+import Profile from "./components/Profile";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { auth } from "./components/firebase";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
-
+  const [user, setUser] = useState();
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+    })
+  },[])
   return (
     <>
       <Router>
@@ -13,9 +21,10 @@ function App() {
           <div className="auth-wrapper">
             <div className="auth-inner">
               <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={user ? <Navigate to="/Profile" /> :<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<SignUp />} />
+                <Route path="/Profile" element={<Profile />} />
               </Routes>
               <ToastContainer />
             </div>
