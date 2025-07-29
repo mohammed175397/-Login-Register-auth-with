@@ -2,6 +2,7 @@ import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { toast } from "react-toastify";
+import SignInWithGoogle from "./SignInWithGoogle";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,10 +13,10 @@ const Login = () => {
     try{
       await signInWithEmailAndPassword(auth, email, password);
       console.log('logged successfully');
+      window.location.href = "/Profile";
       toast.success("User logged in successfully", {
         position: "top-center",
       })
-      window.location.href = "/Profile";
     } catch(error) {
       console.log(error.message);
       toast.error(error.message, {
@@ -62,6 +63,7 @@ const Login = () => {
           Register Here
         </a>
       </p>
+      <SignInWithGoogle />
     </form>
   );
 }
